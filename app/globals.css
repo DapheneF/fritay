@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --orange: #E8720C;
+  --orange-dim: rgba(232, 114, 12, 0.12);
+  --orange-border: rgba(232, 114, 12, 0.35);
+  --bg: #FDF6EE;
+  --bg2: #FFF8F2;
+  --bg3: #FFFFFF;
+  --border: #F0DCC8;
+  --text: #1a0e00;
+  --muted: #8a6a50;
+  --font-bebas: 'Bebas Neue', sans-serif;
+  --font-nunito: 'Nunito', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-nunito);
+}
