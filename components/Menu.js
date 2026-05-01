@@ -4,7 +4,7 @@ import Image from 'next/image';
 const ITEMS = [
   { name: 'Griot', desc: 'Porc frit mariné dans une sauce épicée', price: '$20', img: '/images/griot.jpg' },
   { name: 'Dinde', desc: 'Dinde assaisonnée aux épices haïtiennes', price: '$20', img: '/images/dinde.jpg' },
-  { name: 'Tassot de Bœuf', desc: 'Morceaux de bœuf marinés et frits', price: '$30', img: '/images/tassot.jpg' },
+  { name: 'Tassot de Bœuf', desc: 'Morceaux de bœuf marinés et frits', price: '$30', img:'/images/tassot.jpg' },
   { name: 'Poulet', desc: 'Poulet assaisonné aux épices haïtiennes', price: '$20', img: '/images/poulet.jpg' },
   { name: 'Poisson Entier', desc: 'Poisson assaisonné aux épices haïtiennes', price: '$30', img: '/images/poisson.jpg' },
   { name: 'Pâtés', desc: 'Pâté kodé lakay', price: '$9', img: '/images/pates.jpg' },
