@@ -12,7 +12,7 @@ export default function ReservationPage() {
       }}>
         <div style={{ maxWidth: '640px', margin: '0 auto' }}>
           <p style={{
-            fontSize: '10px', letterSpacing: '6px',
+            fontSize: '10px', letterSpacing: '6x',
             textTransform: 'uppercase', color: 'var(--orange)',
             textAlign: 'center', marginBottom: '6px',
           }}>
@@ -21,7 +21,7 @@ export default function ReservationPage() {
           <h1 style={{
             fontFamily: 'var(--font-bebas)',
             fontSize: '52px', letterSpacing: '4px',
-            color: 'var(--orange)',textAlign: 'center', marginBottom: '4px',
+            color: 'or',textAlign: 'center', marginBottom: '4px',
           }}>
             Réservation
           </h1>
@@ -44,7 +44,7 @@ export default function ReservationPage() {
           📞 343-987-5088
         </a>
         <p style={{ color: '#444', fontSize: '12px', marginTop: '8px' }}>
-          Soirée Fritay · Vendredi 13 Février · Pick-up 18h–22h
+          Soirée Fritay · Vendred· Pick-up 18h–22h
         </p>
       </footer>
     </>

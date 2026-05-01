@@ -39,7 +39,6 @@ export default function Home() {
         </Link>
       </section>
 
-      {/* Footer */}
       <footer style={{
         background: '#111', borderTop: '1px solid #1a1a1a',
         textAlign: 'center', padding: '2rem',
@@ -48,7 +47,7 @@ export default function Home() {
           📞 343-987-5088
         </a>
         <p style={{ color: '#444', fontSize: '12px', marginTop: '8px' }}>
-          GOTI Fritay · Le vrai goût haïtien 🔥 · Commande & Pick-up 18h–22h
+          Soirée Fritay · Vendredi  · Pick-up 18h–22h
         </p>
       </footer>
     </>
