@@ -4,13 +4,21 @@ import Image from 'next/image';
 const ITEMS = [
   { name: 'Griot', desc: 'Porc frit mariné dans une sauce épicée', price: '$20', img: '/images/griot.jpg' },
   { name: 'Dinde', desc: 'Dinde assaisonnée aux épices haïtiennes', price: '$20', img: '/images/dinde.jpg' },
-  { name: 'Tassot de Bœuf', desc: 'Morceaux de bœuf marinés et frits', price: '$25', img: '/images/tassot.jpg' },
+  { name: 'Tassot de Bœuf', desc: 'Morceaux de bœuf marinés et frits', price: '$30', img: '/images/tassot.jpg' },
   { name: 'Poulet', desc: 'Poulet assaisonné aux épices haïtiennes', price: '$20', img: '/images/poulet.jpg' },
-  { name: 'Poisson Entier', desc: 'Poisson assaisonné aux épices haïtiennes', price: '$25', img: '/images/poisson.jpg' },
-  { name: 'Pâtés', desc: 'Pâté kodé lakay', price: '$8.50', img: '/images/pates.jpg' },
+  { name: 'Poisson Entier', desc: 'Poisson assaisonné aux épices haïtiennes', price: '$30', img: '/images/poisson.jpg' },
+  { name: 'Pâtés', desc: 'Pâté kodé lakay', price: '$9', img: '/images/pates.jpg' },
 ];
 
-const SIDES = ['Riz Noir / Djon Djon', 'Bananes Pesées', 'Akra', 'Marinades', 'Pikliz', 'Ti Pâtés'];
+// Modification ici : Transformation en tableau d'objets avec prix
+const SIDES = [
+  { name: 'Riz Noir / Djon Djon', price: 5 },
+  { name: 'Bananes Pesées', price: 0 },
+  { name: 'Akra', price: 0 },
+  { name: 'Marinades', price: 0 },
+  { name: 'Pikliz', price: 0 },
+  { name: 'Ti Pâtés', price: 0 },
+];
 
 export default function Menu() {
   return (
@@ -57,7 +65,6 @@ export default function Menu() {
               e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
-            {/* Photo */}
             <div style={{ position: 'relative', height: '220px', overflow: 'hidden' }}>
               <Image
                 src={item.img}
@@ -67,7 +74,6 @@ export default function Menu() {
               />
             </div>
 
-            {/* Info */}
             <div style={{ padding: '14px' }}>
               <span style={{ fontWeight: 800, fontSize: '15px', display: 'block' }}>
                 {item.name}
@@ -104,13 +110,14 @@ export default function Menu() {
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px' }}>
           {SIDES.map(side => (
-            <span key={side} style={{
+            <span key={side.name} style={{
               background: 'var(--bg2)',
               border: '1px solid var(--border)',
               borderRadius: '20px', padding: '6px 16px',
-              fontSize: '13px', color: '#000000',
+              fontSize: '13px', color: '#070606',
             }}>
-              {side}
+              {/* Affichage conditionnel du prix */}
+              {side.name} {side.price > 0 && <strong style={{color: 'var(--orange)'}}>(+${side.price})</strong>}
             </span>
           ))}
         </div>

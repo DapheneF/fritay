@@ -4,13 +4,21 @@ import { useState } from 'react';
 const ITEMS = [
   { name: 'Griot', desc: 'Porc frit mariné', price: 20 },
   { name: 'Dinde', desc: 'Dinde assaisonnée', price: 20 },
-  { name: 'Tassot de Bœuf', desc: 'Bœuf mariné et frit', price: 25 },
+  { name: 'Tassot de Bœuf', desc: 'Bœuf mariné et frit', price: 30 },
   { name: 'Poulet', desc: 'Poulet assaisonné', price: 20 },
-  { name: 'Poisson Entier', desc: 'Poisson assaisonné', price: 25 },
-  { name: 'Pâtés', desc: 'Pâté kodé lakay', price: 8.5 },
+  { name: 'Poisson Entier', desc: 'Poisson assaisonné', price: 30 },
+  { name: 'Pâtés', desc: 'Pâté kodé lakay', price: 9 },
 ];
 
-const SIDES = ['Riz Noir / Djon Djon', 'Bananes Pesées', 'Akra', 'Marinades', 'Pikliz', 'Ti Pâtés'];
+// Modification 1 : Tableau d'objets pour gérer le supplément
+const SIDES_DATA = [
+  { name: 'Riz Noir / Djon Djon', price: 5 },
+  { name: 'Bananes Pesées', price: 0 },
+  { name: 'Akra', price: 0 },
+  { name: 'Pikliz', price: 0 },
+  { name: 'Ti Pâtés', price: 0 },
+];
+
 const HEURES = ['18h00','18h30','19h00','19h30','20h00','20h30','21h00','21h30','22h00'];
 
 const inputStyle = {
@@ -30,7 +38,14 @@ export default function ReservationForm() {
   const [sides, setSides] = useState([]);
   const [status, setStatus] = useState('idle');
 
-  const total = order.reduce((s, i) => i.checked ? s + i.price * i.qty : s, 0);
+  // Modification 2 : Calcul du total incluant le supplément des accompagnements
+  const totalItems = order.reduce((s, i) => i.checked ? s + i.price * i.qty : s, 0);
+  const totalSides = sides.reduce((s, sideName) => {
+    const sideInfo = SIDES_DATA.find(sd => sd.name === sideName);
+    return s + (sideInfo ? sideInfo.price : 0);
+  }, 0);
+  
+  const total = totalItems + totalSides;
 
   const toggleItem = (idx) => {
     setOrder(prev => prev.map((item, i) => i === idx ? { ...item, checked: !item.checked } : item));
@@ -47,6 +62,7 @@ export default function ReservationForm() {
   const handleSubmit = async () => {
     if (!form.prenom || !form.nom) return alert('Veuillez entrer votre nom complet.');
     if (!form.tel) return alert('Veuillez entrer votre numéro de téléphone.');
+    if (!form.email) return alert('Veuillez entrer votre email.');
     if (!form.heure) return alert('Veuillez choisir une heure de pick-up.');
     if (!order.some(i => i.checked)) return alert('Veuillez sélectionner au moins un plat.');
 
@@ -84,8 +100,10 @@ export default function ReservationForm() {
       }}>Merci !</h3>
       <p style={{ color: '#5a3a1a', fontSize: '16px', lineHeight: 1.7 }}>
         Votre réservation a bien été reçue.<br />
-        Nous vous contacterons au <strong style={{ color: '#1a0e00' }}>{form.tel}</strong> pour confirmer.<br /><br />
-        Paiement : <strong style={{ color: 'var(--orange)' }}>Cash ou Interac</strong> au pick-up.<br /><br />
+        Un email de confirmation vous a été envoyé à <strong>{form.email}</strong>.<br />
+         Veuillez vérifier votre boîte de réception (et vos spams).<br /><br />
+        Paiement : <strong style={{ color: 'var(--orange)' }}>Cash ou Interac</strong> au pick-up.<br />
+        Pour Interac : envoyez à <strong>daphenefaubert@gmail.com</strong><br /><br />
         À vendredi ! 🍗
       </p>
     </div>
@@ -103,19 +121,17 @@ export default function ReservationForm() {
         💵 <strong style={{ color: 'var(--orange)' }}>Paiement à la livraison / pick-up</strong> — Cash ou Interac acceptés.
       </div>
 
-      {/* Name row */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
         <div>
           <label style={labelStyle}>Prénom *</label>
-          <input style={inputStyle} placeholder="Marie" value={form.prenom} onChange={e => setForm({ ...form, prenom: e.target.value })} />
+          <input style={inputStyle} placeholder="Dane" value={form.prenom} onChange={e => setForm({ ...form, prenom: e.target.value })} />
         </div>
         <div>
           <label style={labelStyle}>Nom *</label>
-          <input style={inputStyle} placeholder="Dupont" value={form.nom} onChange={e => setForm({ ...form, nom: e.target.value })} />
+          <input style={inputStyle} placeholder="Faubert" value={form.nom} onChange={e => setForm({ ...form, nom: e.target.value })} />
         </div>
       </div>
 
-      {/* Tel + Heure */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
         <div>
           <label style={labelStyle}>Téléphone *</label>
@@ -130,13 +146,11 @@ export default function ReservationForm() {
         </div>
       </div>
 
-      {/* Email */}
       <div>
-        <label style={labelStyle}>Email</label>
+        <label style={labelStyle}>Email *</label>
         <input style={inputStyle} type="email" placeholder="exemple@email.com" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
       </div>
 
-      {/* Order */}
       <div>
         <label style={{ ...labelStyle, marginBottom: '10px' }}>Menu Spécial *</label>
         <div style={{ background: '#fff', border: '1px solid #F0DCC8', borderRadius: '10px', overflow: 'hidden' }}>
@@ -191,6 +205,27 @@ export default function ReservationForm() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Sides */}
+      <div>
+        <label style={{ ...labelStyle, marginBottom: '10px' }}>Accompagnements</label>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+          {SIDES_DATA.map(side => (
+            <button key={side.name} onClick={() => toggleSide(side.name)} style={{
+              background: sides.includes(side.name) ? '#FFF3E8' : '#fff',
+              border: `1px solid ${sides.includes(side.name) ? 'var(--orange)' : '#F0DCC8'}`,
+              borderRadius: '20px', padding: '7px 16px',
+              fontSize: '13px', fontFamily: 'inherit',
+              color: sides.includes(side.name) ? 'var(--orange)' : '#5a3a1a',
+              fontWeight: sides.includes(side.name) ? 700 : 400,
+              cursor: 'pointer', transition: 'all 0.15s',
+            }}>
+              {/* Modification 3 : Affichage visuel du supplément */}
+              {side.name} {side.price > 0 ? `(+$${side.price})` : ''}
+            </button>
+          ))}
+        </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0' }}>
           <span style={{ fontSize: '11px', letterSpacing: '2px', textTransform: 'uppercase', color: '#8a6a50' }}>Total estimé</span>
           <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '32px', color: 'var(--orange)', letterSpacing: '2px' }}>
@@ -199,27 +234,6 @@ export default function ReservationForm() {
         </div>
       </div>
 
-      {/* Sides */}
-      <div>
-        <label style={{ ...labelStyle, marginBottom: '10px' }}>Accompagnements</label>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-          {SIDES.map(side => (
-            <button key={side} onClick={() => toggleSide(side)} style={{
-              background: sides.includes(side) ? '#FFF3E8' : '#fff',
-              border: `1px solid ${sides.includes(side) ? 'var(--orange)' : '#F0DCC8'}`,
-              borderRadius: '20px', padding: '7px 16px',
-              fontSize: '13px', fontFamily: 'inherit',
-              color: sides.includes(side) ? 'var(--orange)' : '#5a3a1a',
-              fontWeight: sides.includes(side) ? 700 : 400,
-              cursor: 'pointer', transition: 'all 0.15s',
-            }}>
-              {side}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Special */}
       <div>
         <label style={labelStyle}>Demande spéciale</label>
         <textarea style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }}
@@ -229,7 +243,6 @@ export default function ReservationForm() {
         />
       </div>
 
-      {/* Submit */}
       <button
         onClick={handleSubmit}
         disabled={status === 'loading'}
